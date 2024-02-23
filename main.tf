@@ -54,20 +54,20 @@ module "alb" {
 
   security_groups = module.blog_sg.security_group_id
 
-  target_groups = {
-    ex-instance = {
+  target_groups = [
+    {
       name_prefix      = "blog-"
-      protocol         = "HTTP"
-      port             = 80
+      backend-protocol = "HTTP"
+      backend-port     = 80
       target_type      = "instance"
-    }
-    targets {
-      my_target {
-        target_id = aws_instance.blog.id
-        port = 80
+      targets = {
+        my_target = {
+          target_id = aws_instance.blog.id
+          port = 80
+        }
       }
     }
-  }
+  ]
 
   listeners = {
     ex-http-https-redirect = {
